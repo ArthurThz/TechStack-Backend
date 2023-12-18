@@ -16,16 +16,24 @@ export class DatabaseMemory {
     this.#posts.delete(id);
   }
 
-  list() {
-    return Array.from(this.#posts.entries()).map((postArr) => {
-      const id = postArr[0];
+  list(search) {
+    return Array.from(this.#posts.entries())
+      .map((postArr) => {
+        const id = postArr[0];
 
-      const data = postArr[1];
+        const data = postArr[1];
 
-      return {
-        id,
-        ...data,
-      };
-    });
+        return {
+          id,
+          ...data,
+        };
+      })
+      .filter((post) => {
+        if (search) {
+          return post.title.includes(search);
+        }
+
+        return true;
+      });
   }
 }
