@@ -1,0 +1,32 @@
+POST http://localhost:3333/post
+Content-Type: application/json
+
+{
+    "title":"Desvendando o node js",
+    "body":"Estudando node js enquanto adiciono mais um projeto ao meu portfolio",
+    "image":""
+}
+
+
+###
+
+GET http://localhost:3333/posts
+
+
+###
+
+PUT  http://localhost:3333/post/
+Content-Type: application/json
+
+{
+    "title":"Desvendando o node js novamente",
+    "body":"Estudando node js enquanto adiciono mais um projeto ao meu portfolio",
+    "image":""
+}
+
+
+###
+
+DELETE  http://localhost:3333/post/945a5a55-bec6-4e32-9164-00817887566f
+
+
