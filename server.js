@@ -4,6 +4,7 @@ import { DatabaseMemory } from "./database-memory.js";
 const server = fastify();
 
 const database = new DatabaseMemory();
+// testing
 
 server.post("/post", (request, response) => {
   const { title, body, image } = request.body;
