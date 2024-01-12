@@ -1,9 +1,26 @@
+POST http://localhost:3333/user
+Content-Type: application/json
+
+{
+   "cpf":"12345678920",
+   "nome":"Arthur",
+   "sobrenome":"Theodoro",
+   "email":"arthur@mail.com",
+   "telefone":"(11)988888888",
+   "profissao":"Front end Dev",
+   "senha":"123123123"
+}
+
+
+###
+
 POST http://localhost:3333/post
 Content-Type: application/json
 
 {
-   "title":"Desvendando o node js",
-   "content":"Aprendendo um pouco mais sobre como funciona o node js"
+   "title":"Teste",
+   "content":"SALSDJKLSDAKJDSLKJSDAJKLDSAJKLSDAKJLSADJKLDASLJK",
+   "creator":"Arthur Theodoro"
 }
 
 

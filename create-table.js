@@ -1,11 +1,16 @@
 import { sql } from "./db.js";
 
 sql`
-CREATE TABLE Posts (
-    id TEXT PRIMARY KEY,
-    title TEXT,
-    content TEXT,
-    date TEXT
-);
+CREATE TABLE Users (
+    cpf TEXT PRIMARY KEY,
+    nome TEXT,
+    sobrenome TEXT,
+    email TEXT,
+    telefone TEXT,
+    profissao TEXT,
+    senha TEXT
+)
+
+
 
 `.then(() => console.log("tabela criada!"));

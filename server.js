@@ -1,16 +1,22 @@
 import { fastify } from "fastify";
 import { DatabaseMemory } from "./database-memory.js";
-import { DatabasePostgres } from "./database-postgres.js";
+import { DatabasePostgres } from "./database-posts.js";
+import { DatabaseUsers } from "./database-users.js";
 
 const server = fastify();
 
 const database = new DatabasePostgres();
 
+const users = new DatabaseUsers();
+
+// Posts Routes
+
 server.post("/post", async (request, response) => {
-  const { title, content } = request.body;
+  const { title, content, creator } = request.body;
   await database.create({
     title,
     content,
+    creator,
   });
 
   console.log(title, content);
@@ -44,6 +50,27 @@ server.delete("/post/:id", async (request, response) => {
   await database.delete(postId);
 
   return response.status(204).send();
+});
+
+// Users Routes
+
+server.post("/user", async (request, response) => {
+  const { cpf, nome, sobrenome, email, telefone, profissao, senha } =
+    request.body;
+
+  await users.create({
+    cpf,
+    nome,
+    sobrenome,
+    email,
+    telefone,
+    profissao,
+    senha,
+  });
+
+  console.log(cpf);
+
+  return response.status(201).send();
 });
 
 server.listen({
