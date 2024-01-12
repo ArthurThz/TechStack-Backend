@@ -9,7 +9,18 @@ export class DatabaseUsers {
     WHERE NOT EXISTS (SELECT cpf FROM users WHERE cpf = ${cpf})`;
   }
 
-  async update(id, post) {}
+  async update(id, user) {
+    if (!user) return;
 
-  async list(search) {}
+    const { nome, sobrenome, email, telefone, profissao, senha } = user;
+
+    await sql`update users set nome = ${nome}, sobrenome = ${sobrenome}, email = ${email}, telefone = ${telefone}, profissao = ${profissao},
+    senha = ${senha} WHERE cpf = ${id} `;
+  }
+
+  async list(id) {
+    const posts = await sql`SELECT * FROM users WHERE cpf = ${id}`;
+
+    return posts;
+  }
 }

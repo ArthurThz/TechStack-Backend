@@ -26,17 +26,21 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3333/posts
+GET http://localhost:3333/user/12345678910
 
 
 ###
 
-PUT  http://localhost:3333/post/b954c5b3-77eb-487c-a5af-094461448782
+PUT  http://localhost:3333/user/12345678910
 Content-Type: application/json
 
 {
-    "title":"Post 01",
-    "content":"Atualizando o post"
+   "nome":"Arthur",
+   "sobrenome":"Henrique",
+   "email":"arthur@mail.com",
+   "telefone":"(11)988888888",
+   "profissao":"Front end Dev",
+   "senha":"123123123"   
     
 }
 

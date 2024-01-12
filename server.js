@@ -19,7 +19,6 @@ server.post("/post", async (request, response) => {
     creator,
   });
 
-  console.log(title, content);
   return response.status(201).send();
 });
 
@@ -71,6 +70,31 @@ server.post("/user", async (request, response) => {
   console.log(cpf);
 
   return response.status(201).send();
+});
+
+server.put("/user/:id", async (request, response) => {
+  const userId = request.params.id;
+
+  const { nome, sobrenome, email, telefone, profissao, senha } = request.body;
+
+  await users.update(userId, {
+    nome,
+    sobrenome,
+    email,
+    telefone,
+    profissao,
+    senha,
+  });
+
+  return response.status(204).send();
+});
+
+server.get("/user/:id", async (request, response) => {
+  const userId = request.params.id;
+
+  const userData = await users.list(userId);
+
+  return userData;
 });
 
 server.listen({
