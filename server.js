@@ -64,7 +64,7 @@ server.post("/user", async (request, response) => {
 
   const verifyUser = await users.verifyIfUserExists(cpf);
 
-  if (verifyUser) {
+  if (verifyUser.length > 0) {
     return response.status(401).send({
       errorMessage: "Usuário já está cadastro em nosso sistema",
     });
