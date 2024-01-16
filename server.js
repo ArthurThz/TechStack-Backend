@@ -2,12 +2,17 @@ import { fastify } from "fastify";
 import { DatabaseMemory } from "./database-memory.js";
 import { DatabasePostgres } from "./database-posts.js";
 import { DatabaseUsers } from "./database-users.js";
+import cors from "@fastify/cors";
 
 const server = fastify();
 
 const database = new DatabasePostgres();
 
 const users = new DatabaseUsers();
+
+server.register(cors, {
+  origin: "*",
+});
 
 // Posts Routes
 
@@ -57,6 +62,14 @@ server.post("/user", async (request, response) => {
   const { cpf, nome, sobrenome, email, telefone, profissao, senha } =
     request.body;
 
+  const verifyUser = await users.verifyIfUserExists(cpf);
+
+  if (verifyUser) {
+    return response.status(401).send({
+      errorMessage: "Usuário já está cadastro em nosso sistema",
+    });
+  }
+
   await users.create({
     cpf,
     nome,
@@ -66,8 +79,6 @@ server.post("/user", async (request, response) => {
     profissao,
     senha,
   });
-
-  console.log(cpf);
 
   return response.status(201).send();
 });

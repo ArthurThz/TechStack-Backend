@@ -23,4 +23,10 @@ export class DatabaseUsers {
 
     return posts;
   }
+
+  async verifyIfUserExists(id) {
+    const user = sql`SELECT cpf FROM users WHERE cpf = ${id}`;
+
+    return user;
+  }
 }
