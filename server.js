@@ -2,6 +2,7 @@ import { fastify } from "fastify";
 import { DatabaseMemory } from "./database-memory.js";
 import { DatabasePostgres } from "./database-posts.js";
 import { DatabaseUsers } from "./database-users.js";
+import { AuthService } from "./src/auth/auth-service.js";
 import cors from "@fastify/cors";
 
 const server = fastify();
@@ -9,6 +10,8 @@ const server = fastify();
 const database = new DatabasePostgres();
 
 const users = new DatabaseUsers();
+
+const auth = new AuthService();
 
 server.register(cors, {
   origin: "*",
@@ -58,7 +61,7 @@ server.delete("/post/:id", async (request, response) => {
 
 // Users Routes
 
-server.post("/user", async (request, response) => {
+server.post("/users/register", async (request, response) => {
   const { cpf, nome, sobrenome, email, telefone, profissao, senha } =
     request.body;
 
@@ -82,7 +85,13 @@ server.post("/user", async (request, response) => {
 
   return response.status(201).send();
 });
+server.post("/users/login", async (request, response) => {
+  const { email, senha } = request.body;
 
+  await auth.login(email, senha);
+
+  return response.status(201).send();
+});
 server.put("/user/:id", async (request, response) => {
   const userId = request.params.id;
 
@@ -107,6 +116,8 @@ server.get("/user/:id", async (request, response) => {
 
   return userData;
 });
+
+// Criar rota de auth do usuario com jwt e busca de credenciais de usuário para login
 
 server.listen({
   port: 3333,
