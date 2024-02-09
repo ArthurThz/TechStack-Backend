@@ -88,9 +88,9 @@ server.post("/users/register", async (request, response) => {
 server.post("/users/login", async (request, response) => {
   const { email, senha } = request.body;
 
-  await auth.login(email, senha);
+  const res = await auth.login(email, senha);
 
-  return response.status(201).send();
+  return response.status(201).send(res);
 });
 server.put("/user/:id", async (request, response) => {
   const userId = request.params.id;
