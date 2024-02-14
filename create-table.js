@@ -1,14 +1,13 @@
 import { sql } from "./db.js";
 
 sql`
-CREATE TABLE Users (
-    cpf TEXT PRIMARY KEY,
-    nome TEXT,
-    sobrenome TEXT,
-    email TEXT,
-    telefone TEXT,
-    profissao TEXT,
-    senha TEXT
+CREATE TABLE Posts (
+    id TEXT PRIMARY KEY,
+    creatorId TEXT,
+    creatorName TEXT,
+    title TEXT,
+    content TEXT,
+    date TEXT
 )
 
 

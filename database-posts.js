@@ -14,8 +14,6 @@ export class DatabasePostgres {
     const { title, content, creator } = post;
 
     await sql`INSERT INTO posts (id, title, content, creator, date) VALUES (${postId},${title},${content},${creator},${formatedDate})`;
-
-    console.log(post);
   }
 
   async update(id, post) {

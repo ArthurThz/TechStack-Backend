@@ -30,10 +30,18 @@ server.post("/post", async (request, response) => {
   return response.status(201).send();
 });
 
-server.get("/posts", async (request) => {
+server.get("/posts/general", async (request) => {
   const search = request.query.search;
 
   const posts = await database.list(search);
+
+  return posts;
+});
+
+server.get("/posts/user/:id", async (request, response) => {
+  const userId = request.params.id;
+
+  const posts = await users.userPosts(userId);
 
   return posts;
 });
@@ -86,9 +94,9 @@ server.post("/users/register", async (request, response) => {
   return response.status(201).send();
 });
 server.post("/users/login", async (request, response) => {
-  const { email, senha } = request.body;
+  const { email, password } = request.body;
 
-  const res = await auth.login(email, senha);
+  const res = await auth.login(email, password);
 
   return response.status(201).send(res);
 });
