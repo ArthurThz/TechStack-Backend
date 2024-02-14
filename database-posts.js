@@ -11,9 +11,9 @@ export class DatabasePostgres {
       unfortmatedDate.getMonth() + 1
     }/${unfortmatedDate.getFullYear()}`;
 
-    const { title, content } = post;
+    const { title, content, creator } = post;
 
-    await sql`INSERT INTO posts (id, title, content, date) VALUES (${postId},${title},${content},${formatedDate})`;
+    await sql`INSERT INTO posts (id, title, content, creator, date) VALUES (${postId},${title},${content},${creator},${formatedDate})`;
   }
 
   async update(id, post) {

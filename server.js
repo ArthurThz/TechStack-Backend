@@ -1,26 +1,47 @@
 import { fastify } from "fastify";
 import { DatabaseMemory } from "./database-memory.js";
-import { DatabasePostgres } from "./database-postgres.js";
+import { DatabasePostgres } from "./database-posts.js";
+import { DatabaseUsers } from "./database-users.js";
+import { AuthService } from "./src/auth/auth-service.js";
+import cors from "@fastify/cors";
 
 const server = fastify();
 
 const database = new DatabasePostgres();
 
+const users = new DatabaseUsers();
+
+const auth = new AuthService();
+
+server.register(cors, {
+  origin: "*",
+});
+
+// Posts Routes
+
 server.post("/post", async (request, response) => {
-  const { title, content } = request.body;
+  const { title, content, creator } = request.body;
   await database.create({
     title,
     content,
+    creator,
   });
 
-  console.log(title, content);
   return response.status(201).send();
 });
 
-server.get("/posts", async (request) => {
+server.get("/posts/general", async (request) => {
   const search = request.query.search;
 
   const posts = await database.list(search);
+
+  return posts;
+});
+
+server.get("/posts/user/:id", async (request, response) => {
+  const userId = request.params.id;
+
+  const posts = await users.userPosts(userId);
 
   return posts;
 });
@@ -45,6 +66,66 @@ server.delete("/post/:id", async (request, response) => {
 
   return response.status(204).send();
 });
+
+// Users Routes
+
+server.post("/users/register", async (request, response) => {
+  const { cpf, nome, sobrenome, email, telefone, profissao, senha } =
+    request.body;
+
+  const verifyUser = await users.verifyIfUserExists(cpf);
+
+  if (verifyUser.length > 0) {
+    return response.status(401).send({
+      errorMessage: "Usuário já está cadastro em nosso sistema",
+    });
+  }
+
+  await users.create({
+    cpf,
+    nome,
+    sobrenome,
+    email,
+    telefone,
+    profissao,
+    senha,
+  });
+
+  return response.status(201).send();
+});
+server.post("/users/login", async (request, response) => {
+  const { email, password } = request.body;
+
+  const res = await auth.login(email, password);
+
+  return response.status(201).send(res);
+});
+server.put("/user/:id", async (request, response) => {
+  const userId = request.params.id;
+
+  const { nome, sobrenome, email, telefone, profissao, senha } = request.body;
+
+  await users.update(userId, {
+    nome,
+    sobrenome,
+    email,
+    telefone,
+    profissao,
+    senha,
+  });
+
+  return response.status(204).send();
+});
+
+server.get("/user/:id", async (request, response) => {
+  const userId = request.params.id;
+
+  const userData = await users.list(userId);
+
+  return userData;
+});
+
+// Criar rota de auth do usuario com jwt e busca de credenciais de usuário para login
 
 server.listen({
   port: 3333,
