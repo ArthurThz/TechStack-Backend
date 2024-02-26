@@ -1,19 +1,30 @@
 import { randomUUID } from "node:crypto";
 import { sql } from "./db.js";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale/pt-BR";
 
-export class DatabasePostgres {
+export class PostsDatabase {
   async create(post) {
     const postId = randomUUID();
 
-    const unfortmatedDate = new Date();
+    const { id, title, content } = post;
 
-    const formatedDate = `${unfortmatedDate.getDate()}/${
-      unfortmatedDate.getMonth() + 1
-    }/${unfortmatedDate.getFullYear()}`;
+    const publishedDate = format(new Date(), "dd/MM/yyyy", {
+      locale: ptBR,
+    });
 
-    const { title, content, creator } = post;
+    const userData =
+      await sql`SELECT nome, sobrenome, profissao FROM users WHERE id = ${id}`;
 
-    await sql`INSERT INTO posts (id, title, content, creator, date) VALUES (${postId},${title},${content},${creator},${formatedDate})`;
+    const { nome, sobrenome, profissao } = userData[0];
+
+    const creatorName = `${nome} ${sobrenome}`;
+
+    await sql`
+    INSERT INTO posts
+    (id, creatorId, creatorName, title, content, role, date)
+    VALUES
+    (${postId},${id},${creatorName},${title},${content},${profissao},${publishedDate})`;
   }
 
   async update(id, post) {

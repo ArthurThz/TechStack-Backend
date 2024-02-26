@@ -34,6 +34,20 @@ export class DatabaseUsers {
     return posts;
   }
 
+  async listUserData(id) {
+    const user = sql`SELECT cpf, nome, sobrenome, email, telefone, profissao,senha FROM users WHERE id = ${id}`;
+
+    return user;
+  }
+
+  async getUserProfileData(id) {
+    const userInfo =
+      await sql`SELECT nome, sobrenome, profissao FROM users WHERE id = ${id}`;
+    const userPosts = await sql`SELECT * FROM posts WHERE creatorid = ${id}`;
+
+    return { userInfo, userPosts };
+  }
+
   async verifyIfUserExists(id) {
     const user = sql`SELECT cpf FROM users WHERE cpf = ${id}`;
 
