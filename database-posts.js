@@ -14,17 +14,17 @@ export class PostsDatabase {
     });
 
     const userData =
-      await sql`SELECT nome, sobrenome, profissao FROM users WHERE id = ${id}`;
+      await sql`SELECT nome, sobrenome, profissao, profilepic FROM users WHERE id = ${id}`;
 
-    const { nome, sobrenome, profissao } = userData[0];
+    const { nome, sobrenome, profissao, profilepic } = userData[0];
 
     const creatorName = `${nome} ${sobrenome}`;
 
     await sql`
     INSERT INTO posts
-    (id, creatorId, creatorName, title, content, role, date)
+    (id, creatorId, creatorName, title, content, role, date, profilepic)
     VALUES
-    (${postId},${id},${creatorName},${title},${content},${profissao},${publishedDate})`;
+    (${postId},${id},${creatorName},${title},${content},${profissao},${publishedDate},${profilepic})`;
   }
 
   async update(id, post) {

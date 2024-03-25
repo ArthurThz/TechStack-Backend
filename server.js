@@ -19,12 +19,8 @@ server.register(cors, {
 // Posts Routes
 
 server.post("/post", async (request, response) => {
-  const { id, title, content } = request.body;
-  await posts.create({
-    id,
-    title,
-    content,
-  });
+  const newPost = request.body;
+  await posts.create(newPost);
 
   return response.status(201).send();
 });
@@ -48,12 +44,9 @@ server.get("/posts/user/:id", async (request, response) => {
 server.put("/post/:id", async (request, response) => {
   const postId = request.params.id;
 
-  const { title, content } = request.body;
+  const post = request.body;
 
-  await posts.update(postId, {
-    title,
-    content,
-  });
+  await posts.update(postId, post);
 
   return response.status(204).send();
 });
@@ -69,8 +62,7 @@ server.delete("/post/:id", async (request, response) => {
 // Users Routes
 
 server.post("/users/register", async (request, response) => {
-  const { cpf, nome, sobrenome, email, telefone, profissao, senha } =
-    request.body;
+  const { cpf } = request.body;
 
   const verifyUser = await users.verifyIfUserExists(cpf);
 
@@ -80,15 +72,9 @@ server.post("/users/register", async (request, response) => {
     });
   }
 
-  await users.create({
-    cpf,
-    nome,
-    sobrenome,
-    email,
-    telefone,
-    profissao,
-    senha,
-  });
+  const newUser = request.body;
+
+  await users.create(newUser);
 
   return response.status(201).send();
 });
