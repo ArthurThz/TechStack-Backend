@@ -20,7 +20,7 @@ Content-Type: application/json
 {
    
    "email":"arthur@mail.com",
-   "senha":"123123123"
+   "password":"123123123"
 }
 
 
@@ -30,29 +30,25 @@ POST http://localhost:3333/post
 Content-Type: application/json
 
 {
-   "title":"Teste",
-   "content":"SALSDJKLSDAKJDSLKJSDAJKLDSAJKLSDAKJLSADJKLDASLJK",
-   "creator":"Arthur Theodoro"
+   "id":"f57cbc59-7b68-4cac-879c-1514ccbdbbc8",
+   "title":"TESTANDO 4.0",
+   "content":"Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus, quia. Suscipit incidunt facilis consequatur sunt illo obcaecati, ad perspiciatis! Provident voluptatibus obcaecati quasi ipsa porro, optio accusantium officia dolore saepe. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa sunt temporibus quis, animi ratione earum. Dicta quod voluptatibus suscipit ea, voluptas ut cupiditate dolores ipsum adipisci vitae obcaecati cum? Tempora Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus, quia. Suscipit incidunt facilis consequatur sunt illo obcaecati, ad perspiciatis! Provident voluptatibus obcaecati quasi ipsa porro, optio accusantium officia dolore saepe. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa sunt temporibus quis, animi ratione earum. Dicta quod voluptatibus suscipit ea, voluptas ut cupiditate dolores ipsum adipisci vitae obcaecati cum? Tempora Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus, quia. Suscipit incidunt facilis consequatur sunt illo obcaecati, ad perspiciatis! Provident voluptatibus obcaecati quasi ipsa porro, optio accusantium officia dolore saepe. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa sunt temporibus quis, animi ratione earum. Dicta quod voluptatibus suscipit ea, voluptas ut cupiditate dolores ipsum adipisci vitae obcaecati cum? Tempora Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus, quia. Suscipit incidunt facilis consequatur sunt illo obcaecati, ad perspiciatis! Provident voluptatibus obcaecati quasi ipsa porro, optio accusantium officia dolore saepe. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa sunt temporibus quis, animi ratione earum. Dicta quod voluptatibus suscipit ea, voluptas ut cupiditate dolores ipsum adipisci vitae obcaecati cum? Tempora Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus, quia. Suscipit incidunt facilis consequatur sunt illo obcaecati, ad perspiciatis! Provident voluptatibus obcaecati quasi ipsa porro, optio accusantium officia dolore saepe. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa sunt temporibus quis, animi ratione earum. Dicta quod voluptatibus suscipit ea, voluptas ut cupiditate dolores ipsum adipisci vitae obcaecati cum? Tempora"
 }
 
 
 ###
 
-GET http://localhost:3333/posts/user/f57cbc59-7b68-4cac-879c-1514ccbdbbc8
+GET https://api.github.com/users/arthurthz
 
 
 ###
 
-PUT  http://localhost:3333/user/12345678910
+PUT  http://localhost:3333/post/c2a07ff6-5736-4230-a728-3c461e5b7f1b
 Content-Type: application/json
-
+ 
 {
-   "nome":"Arthur",
-   "sobrenome":"Henrique",
-   "email":"arthur@mail.com",
-   "telefone":"(11)988888888",
-   "profissao":"Front end Dev",
-   "senha":"123123123"   
+   "title":"TESTANDO 3.0",
+   "content":"TURZIN DO GRAU"
     
 }
 

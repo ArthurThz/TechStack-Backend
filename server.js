@@ -1,13 +1,12 @@
 import { fastify } from "fastify";
-import { DatabaseMemory } from "./database-memory.js";
-import { DatabasePostgres } from "./database-posts.js";
+import { PostsDatabase } from "./database-posts.js";
 import { DatabaseUsers } from "./database-users.js";
 import { AuthService } from "./src/auth/auth-service.js";
 import cors from "@fastify/cors";
 
 const server = fastify();
 
-const database = new DatabasePostgres();
+const posts = new PostsDatabase();
 
 const users = new DatabaseUsers();
 
@@ -20,12 +19,8 @@ server.register(cors, {
 // Posts Routes
 
 server.post("/post", async (request, response) => {
-  const { title, content, creator } = request.body;
-  await database.create({
-    title,
-    content,
-    creator,
-  });
+  const newPost = request.body;
+  await posts.create(newPost);
 
   return response.status(201).send();
 });
@@ -33,9 +28,9 @@ server.post("/post", async (request, response) => {
 server.get("/posts/general", async (request) => {
   const search = request.query.search;
 
-  const posts = await database.list(search);
+  const getPosts = await posts.list(search);
 
-  return posts;
+  return getPosts;
 });
 
 server.get("/posts/user/:id", async (request, response) => {
@@ -49,12 +44,9 @@ server.get("/posts/user/:id", async (request, response) => {
 server.put("/post/:id", async (request, response) => {
   const postId = request.params.id;
 
-  const { title, content } = request.body;
+  const post = request.body;
 
-  await database.update(postId, {
-    title,
-    content,
-  });
+  await posts.update(postId, post);
 
   return response.status(204).send();
 });
@@ -62,7 +54,7 @@ server.put("/post/:id", async (request, response) => {
 server.delete("/post/:id", async (request, response) => {
   const postId = request.params.id;
 
-  await database.delete(postId);
+  await posts.delete(postId);
 
   return response.status(204).send();
 });
@@ -70,8 +62,7 @@ server.delete("/post/:id", async (request, response) => {
 // Users Routes
 
 server.post("/users/register", async (request, response) => {
-  const { cpf, nome, sobrenome, email, telefone, profissao, senha } =
-    request.body;
+  const { cpf } = request.body;
 
   const verifyUser = await users.verifyIfUserExists(cpf);
 
@@ -81,15 +72,9 @@ server.post("/users/register", async (request, response) => {
     });
   }
 
-  await users.create({
-    cpf,
-    nome,
-    sobrenome,
-    email,
-    telefone,
-    profissao,
-    senha,
-  });
+  const newUser = request.body;
+
+  await users.create(newUser);
 
   return response.status(201).send();
 });
@@ -99,6 +84,13 @@ server.post("/users/login", async (request, response) => {
   const res = await auth.login(email, password);
 
   return response.status(201).send(res);
+});
+
+server.get("/user/profile/:id", async (request, response) => {
+  const userId = request.params.id;
+
+  const userData = await users.getUserProfileData(userId);
+  return userData;
 });
 server.put("/user/:id", async (request, response) => {
   const userId = request.params.id;
@@ -120,7 +112,7 @@ server.put("/user/:id", async (request, response) => {
 server.get("/user/:id", async (request, response) => {
   const userId = request.params.id;
 
-  const userData = await users.list(userId);
+  const userData = await users.listUserData(userId);
 
   return userData;
 });
