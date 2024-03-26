@@ -2,13 +2,12 @@ POST http://localhost:3333/users/register
 Content-Type: application/json
 
 {
-   "cpf":"12345678910",
-   "nome":"Arthur",
-   "sobrenome":"Theodoro",
-   "email":"arthur@mail.com",
-   "telefone":"(11)988888888",
+   "nome":"Turzin",
+   "email":"turzin@mail.com",
    "profissao":"Front end Dev",
-   "senha":"123123123"
+   "senha":"123123123",
+   "profilepic":"https://avatars.githubusercontent.com/u/89098685?v=4",
+   "github":"arthurthz"
 }
 
 
@@ -38,7 +37,7 @@ Content-Type: application/json
 
 ###
 
-GET https://api.github.com/users/arthurthz
+GET https://api.github.com/users/brunolmki
 
 
 ###

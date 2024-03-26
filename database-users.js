@@ -7,12 +7,32 @@ export class DatabaseUsers {
     const { nome, email, profissao, github, profilepic, senha } = user;
 
     const encryptedPassword = hashSync(senha, 10);
+
     const uuid = randomUUID();
 
-    await sql`INSERT INTO users 
-    (id, nome, email, profissao,senha, profilepic,github ) SELECT 
-    ${uuid},${nome},${email},${profissao},${encryptedPassword},${profilepic} , ${github},  
-    WHERE NOT EXISTS (SELECT cpf FROM users WHERE cpf = ${cpf})`;
+    const userExists = await this.verifyIfUserExists(email);
+
+    if (userExists.length > 0) {
+      const response = { code: 205, message: "Este email já está cadastrado!" };
+      return response;
+    }
+
+    const query = await sql`INSERT INTO users 
+    (id, nome, email, profissao, senha, profilepic, github) 
+    SELECT ${uuid},${nome},${email},${profissao},${encryptedPassword},${profilepic}, ${github}  
+    WHERE NOT EXISTS (SELECT email FROM users WHERE email = ${email})`;
+
+    if (query.length > 0) {
+      const response = {
+        code: 400,
+        message: "Não foi possivel cadastrar o usuário tente novamente!",
+      };
+
+      return response;
+    }
+
+    const response = { code: 201, message: "Usuário cadastrado com sucesso!" };
+    return response;
   }
 
   async update(id, user) {
@@ -50,8 +70,8 @@ export class DatabaseUsers {
     return { userInfo, userPosts };
   }
 
-  async verifyIfUserExists(id) {
-    const user = sql`SELECT cpf FROM users WHERE cpf = ${id}`;
+  async verifyIfUserExists(email) {
+    const user = sql`SELECT email FROM users WHERE email = ${email}`;
 
     return user;
   }

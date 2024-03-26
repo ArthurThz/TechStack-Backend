@@ -62,21 +62,13 @@ server.delete("/post/:id", async (request, response) => {
 // Users Routes
 
 server.post("/users/register", async (request, response) => {
-  const { cpf } = request.body;
-
-  const verifyUser = await users.verifyIfUserExists(cpf);
-
-  if (verifyUser.length > 0) {
-    return response.status(401).send({
-      errorMessage: "Usuário já está cadastro em nosso sistema",
-    });
-  }
-
   const newUser = request.body;
 
-  await users.create(newUser);
+  const dbResponse = await users.create(newUser);
 
-  return response.status(201).send();
+  const { code, message } = dbResponse;
+
+  return response.status(code).send(message);
 });
 server.post("/users/login", async (request, response) => {
   const { email, password } = request.body;
