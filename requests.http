@@ -2,12 +2,13 @@ POST http://localhost:3333/users/register
 Content-Type: application/json
 
 {
-   "nome":"Turzin",
-   "email":"turzin@mail.com",
-   "profissao":"Front end Dev",
-   "senha":"123123123",
-   "profilepic":"https://avatars.githubusercontent.com/u/89098685?v=4",
-   "github":"arthurthz"
+"email": "th@mail.com",
+"github":"arthurthz",
+"nome":"th",
+"profilepic":"https://avatars.githubusercontent.com/u/89098685?v=4",
+"profissao":"dev",
+"repetirSenha":"123123123",
+"senha":"123123123"
 }
 
 
@@ -42,16 +43,17 @@ GET https://api.github.com/users/brunolmki
 
 ###
 
-PUT  http://localhost:3333/post/c2a07ff6-5736-4230-a728-3c461e5b7f1b
+PUT  http://localhost:3333/user/f57cbc59-7b68-4cac-879c-1514ccbdbbc8
 Content-Type: application/json
  
 {
-   "title":"TESTANDO 3.0",
-   "content":"TURZIN DO GRAU"
-    
+   "nome":"O tal do artu",
+   "email":"arthur@mail.com",
+   "profissao":"Front-end Developer",
+   "senha":"$2b$10$tJFjupAOk5Wp44KM9QvbyuVErYMkxlc5auPl5fmQh35t.JlU73tS.",
+   "github":"arthurthz"
 }
-
-
+ 
 ###
 
 DELETE  http://localhost:3333/post/b954c5b3-77eb-487c-a5af-094461448782

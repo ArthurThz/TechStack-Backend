@@ -61,14 +61,16 @@ server.delete("/post/:id", async (request, response) => {
 
 // Users Routes
 
-server.post("/users/register", async (request, response) => {
+server.post("/users/register", async (request, reply) => {
   const newUser = request.body;
 
   const dbResponse = await users.create(newUser);
 
   const { code, message } = dbResponse;
 
-  return response.status(code).send(message);
+  console.log(message);
+
+  return reply.status(code).send({ message });
 });
 server.post("/users/login", async (request, response) => {
   const { email, password } = request.body;
@@ -87,18 +89,19 @@ server.get("/user/profile/:id", async (request, response) => {
 server.put("/user/:id", async (request, response) => {
   const userId = request.params.id;
 
-  const { nome, sobrenome, email, telefone, profissao, senha } = request.body;
+  const { nome, email, profissao, senha, github } = request.body;
 
-  await users.update(userId, {
+  const databaseCallResponse = await users.update(userId, {
     nome,
-    sobrenome,
     email,
-    telefone,
     profissao,
     senha,
+    github,
   });
 
-  return response.status(204).send();
+  const { code, message } = databaseCallResponse;
+
+  return response.status(code).send(message);
 });
 
 server.get("/user/:id", async (request, response) => {
@@ -108,8 +111,6 @@ server.get("/user/:id", async (request, response) => {
 
   return userData;
 });
-
-// Criar rota de auth do usuario com jwt e busca de credenciais de usuário para login
 
 server.listen({
   port: 3333,

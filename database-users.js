@@ -5,7 +5,12 @@ import { randomUUID } from "node:crypto";
 export class DatabaseUsers {
   async create(user) {
     const { nome, email, profissao, github, profilepic, senha } = user;
+    const status = {
+      code: "",
+      message: "",
+    };
 
+    console.log(user);
     const encryptedPassword = hashSync(senha, 10);
 
     const uuid = randomUUID();
@@ -13,7 +18,7 @@ export class DatabaseUsers {
     const userExists = await this.verifyIfUserExists(email);
 
     if (userExists.length > 0) {
-      const response = { code: 205, message: "Este email já está cadastrado!" };
+      const response = { code: 200, message: "Este email já está cadastrado!" };
       return response;
     }
 
@@ -38,15 +43,44 @@ export class DatabaseUsers {
   async update(id, user) {
     if (!user) return;
 
-    const { nome, sobrenome, email, telefone, profissao, senha } = user;
+    const status = {
+      code: "",
+      message: "",
+    };
 
-    await sql`
+    let emptyValues = [];
+
+    for (const key in user) {
+      if (user[key] === "") {
+        emptyValues.push(key);
+      }
+    }
+
+    if (emptyValues.length > 0) {
+      status.code = 400;
+      status.message = `os campos ${emptyValues} estão vazios!`;
+      return status;
+    }
+
+    const { nome, email, profissao, senha, github } = user;
+
+    const response = await sql`
     update users set nome = ${nome},
-    sobrenome = ${sobrenome},
     email = ${email},
-    telefone = ${telefone},
     profissao = ${profissao},
-    senha = ${senha} WHERE cpf = ${id} `;
+    senha = ${senha},
+    github = ${github} WHERE id = ${id} `;
+
+    if (response.length > 0) {
+      status.message = "Algo deu errado, tente novamente!";
+      status.code = 400;
+      return { status, response };
+    }
+
+    status.message = "Usuário atualizado com sucesso!";
+    status.code = 200;
+
+    return status;
   }
 
   async userPosts(id) {
@@ -57,7 +91,8 @@ export class DatabaseUsers {
   }
 
   async listUserData(id) {
-    const user = sql`SELECT cpf, nome, sobrenome, email, telefone, profissao,senha FROM users WHERE id = ${id}`;
+    const user =
+      await sql`SELECT nome, email, profissao, senha, github FROM users WHERE id = ${id}`;
 
     return user;
   }
