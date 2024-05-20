@@ -1,26 +1,37 @@
 import { sql } from "./db.js";
 import { hashSync } from "bcrypt";
 import { randomUUID } from "node:crypto";
+import { checkNullValues } from "./src/hooks/checkNullValues.js";
 
 export class DatabaseUsers {
   async create(user) {
-    const { nome, email, profissao, github, profilepic, senha } = user;
-    const status = {
+    let status = {
       code: "",
       message: "",
     };
 
-    console.log(user);
-    const encryptedPassword = hashSync(senha, 10);
-
     const uuid = randomUUID();
+
+    const userNullValues = checkNullValues(user);
+
+    if (userNullValues.length > 0) {
+      status.code = 400;
+      status.message = `Os campos ${userNullValues} estão vazios!`;
+      return status;
+    }
+
+    const { nome, email, profissao, github, profilepic, senha } = user;
 
     const userExists = await this.verifyIfUserExists(email);
 
     if (userExists.length > 0) {
-      const response = { code: 200, message: "Este email já está cadastrado!" };
-      return response;
+      status.code = 200;
+      status.message = "Este email já está cadastrado!";
+
+      return status;
     }
+
+    const encryptedPassword = hashSync(senha, 10);
 
     const query = await sql`INSERT INTO users 
     (id, nome, email, profissao, senha, profilepic, github) 
@@ -28,37 +39,31 @@ export class DatabaseUsers {
     WHERE NOT EXISTS (SELECT email FROM users WHERE email = ${email})`;
 
     if (query.length > 0) {
-      const response = {
-        code: 400,
-        message: "Não foi possivel cadastrar o usuário tente novamente!",
-      };
+      status.code = 400;
+      status.message = "Não foi possivel cadastrar o usuário, tente novamente!";
 
-      return response;
+      return { status, query };
     }
 
-    const response = { code: 201, message: "Usuário cadastrado com sucesso!" };
-    return response;
+    status.code = 200;
+    status.message = "Usuário cadastrado com sucesso!";
+
+    return status;
   }
 
   async update(id, user) {
     if (!user) return;
 
-    const status = {
+    let status = {
       code: "",
       message: "",
     };
 
-    let emptyValues = [];
+    const nullValues = checkNullValues(user);
 
-    for (const key in user) {
-      if (user[key] === "") {
-        emptyValues.push(key);
-      }
-    }
-
-    if (emptyValues.length > 0) {
+    if (nullValues.length > 0) {
       status.code = 400;
-      status.message = `os campos ${emptyValues} estão vazios!`;
+      status.message = `Os campos ${nullValues} estão vazios!`;
       return status;
     }
 

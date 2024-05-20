@@ -2,9 +2,9 @@ POST http://localhost:3333/users/register
 Content-Type: application/json
 
 {
-"email": "th@mail.com",
+"email": "arthur@mail.com",
 "github":"arthurthz",
-"nome":"th",
+"nome":"Silva da Silva",
 "profilepic":"https://avatars.githubusercontent.com/u/89098685?v=4",
 "profissao":"dev",
 "repetirSenha":"123123123",
@@ -47,8 +47,8 @@ PUT  http://localhost:3333/user/f57cbc59-7b68-4cac-879c-1514ccbdbbc8
 Content-Type: application/json
  
 {
-   "nome":"O tal do artu",
-   "email":"arthur@mail.com",
+   "nome":"",
+   "email":"",
    "profissao":"Front-end Developer",
    "senha":"$2b$10$tJFjupAOk5Wp44KM9QvbyuVErYMkxlc5auPl5fmQh35t.JlU73tS.",
    "github":"arthurthz"

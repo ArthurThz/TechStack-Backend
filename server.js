@@ -68,16 +68,7 @@ server.post("/users/register", async (request, reply) => {
 
   const { code, message } = dbResponse;
 
-  console.log(message);
-
-  return reply.status(code).send({ message });
-});
-server.post("/users/login", async (request, response) => {
-  const { email, password } = request.body;
-
-  const res = await auth.login(email, password);
-
-  return response.status(201).send(res);
+  return reply.status(code).send(message);
 });
 
 server.get("/user/profile/:id", async (request, response) => {
@@ -89,15 +80,9 @@ server.get("/user/profile/:id", async (request, response) => {
 server.put("/user/:id", async (request, response) => {
   const userId = request.params.id;
 
-  const { nome, email, profissao, senha, github } = request.body;
+  const userData = request.body;
 
-  const databaseCallResponse = await users.update(userId, {
-    nome,
-    email,
-    profissao,
-    senha,
-    github,
-  });
+  const databaseCallResponse = await users.update(userId, userData);
 
   const { code, message } = databaseCallResponse;
 
@@ -110,6 +95,15 @@ server.get("/user/:id", async (request, response) => {
   const userData = await users.listUserData(userId);
 
   return userData;
+});
+
+// USER AUTH
+server.post("/users/login", async (request, response) => {
+  const { email, password } = request.body;
+
+  const res = await auth.login(email, password);
+
+  return response.status(201).send(res);
 });
 
 server.listen({
