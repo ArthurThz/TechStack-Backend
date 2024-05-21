@@ -106,6 +106,13 @@ server.post("/users/login", async (request, response) => {
   return response.status(201).send(res);
 });
 
+server.get("/teste/:id", async (request, reply) => {
+  const id = request.params.id;
+
+  const teste = await users.listUserData(id);
+
+  console.log(teste);
+});
 server.listen({
   port: 3333,
 });

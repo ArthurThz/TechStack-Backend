@@ -23,6 +23,14 @@ Content-Type: application/json
    "password":"123123123"
 }
 
+###
+
+GET  http://localhost:3333/teste/f57cbc59-7b68-4cac-879c-1514ccbdbbc8
+
+
+
+
+
 
 ###
 

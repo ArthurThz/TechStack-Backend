@@ -89,6 +89,8 @@ export class DatabaseUsers {
   }
 
   async userPosts(id) {
+    if (!id) return;
+
     const posts = await sql`
       SELECT * FROM posts WHERE creatorId = ${id}`;
 
@@ -96,21 +98,32 @@ export class DatabaseUsers {
   }
 
   async listUserData(id) {
+    if (!id) return;
+
     const user =
       await sql`SELECT nome, email, profissao, senha, github FROM users WHERE id = ${id}`;
+
+    if (user.length === 0) {
+      return "Não foi possivel encontrar este usuário!";
+    }
 
     return user;
   }
 
   async getUserProfileData(id) {
+    if (!id) return;
+
     const userInfo =
       await sql`SELECT nome, profissao, profilepic FROM users WHERE id = ${id}`;
+
     const userPosts = await sql`SELECT * FROM posts WHERE creatorid = ${id}`;
 
     return { userInfo, userPosts };
   }
 
   async verifyIfUserExists(email) {
+    if (!email) return;
+
     const user = sql`SELECT email FROM users WHERE email = ${email}`;
 
     return user;
