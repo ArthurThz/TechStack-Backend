@@ -16,7 +16,7 @@ server.register(cors, {
   origin: "*",
 });
 
-// Posts Routes
+// POST ROUTES
 
 server.post("/post", async (request, response) => {
   const newPost = request.body;
@@ -59,7 +59,7 @@ server.delete("/post/:id", async (request, response) => {
   return response.status(204).send();
 });
 
-// Users Routes
+// USERS ROUTES
 
 server.post("/users/register", async (request, reply) => {
   const newUser = request.body;
@@ -77,6 +77,8 @@ server.get("/user/profile/:id", async (request, response) => {
   const userData = await users.getUserProfileData(userId);
   return userData;
 });
+
+// Update User Data
 server.put("/user/:id", async (request, response) => {
   const userId = request.params.id;
 
@@ -97,7 +99,7 @@ server.get("/user/:id", async (request, response) => {
   return userData;
 });
 
-// USER AUTH
+// User Auth
 server.post("/users/login", async (request, response) => {
   const { email, password } = request.body;
 
@@ -105,6 +107,8 @@ server.post("/users/login", async (request, response) => {
 
   return response.status(201).send(res);
 });
+
+// TESTING
 
 server.get("/teste/:id", async (request, reply) => {
   const id = request.params.id;

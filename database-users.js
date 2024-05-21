@@ -113,10 +113,27 @@ export class DatabaseUsers {
   async getUserProfileData(id) {
     if (!id) return;
 
+    let status = {
+      message: "",
+      code: "",
+    };
+
     const userInfo =
       await sql`SELECT nome, profissao, profilepic FROM users WHERE id = ${id}`;
 
+    if (userInfo.length === 0) {
+      status.code = 400;
+      status.message =
+        "Não foi possivel encontrar os dados deste usuário, tente novamente!";
+
+      return status;
+    }
+
     const userPosts = await sql`SELECT * FROM posts WHERE creatorid = ${id}`;
+
+    if (userPosts.length === 0) {
+      return { userInfo };
+    }
 
     return { userInfo, userPosts };
   }
