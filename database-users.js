@@ -132,10 +132,11 @@ export class DatabaseUsers {
     const userPosts = await sql`SELECT * FROM posts WHERE creatorid = ${id}`;
 
     if (userPosts.length === 0) {
-      return { userInfo };
+      status.code = 200;
+      return { status, userInfo };
     }
-
-    return { userInfo, userPosts };
+    status.code = 200;
+    return { status, userInfo, userPosts };
   }
 
   async verifyIfUserExists(email) {

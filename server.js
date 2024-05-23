@@ -75,6 +75,7 @@ server.get("/user/profile/:id", async (request, response) => {
   const userId = request.params.id;
 
   const userData = await users.getUserProfileData(userId);
+
   return userData;
 });
 
