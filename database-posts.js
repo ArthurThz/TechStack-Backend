@@ -5,6 +5,12 @@ import { ptBR } from "date-fns/locale/pt-BR";
 
 export class PostsDatabase {
   async create(post) {
+    if (!post) return;
+
+    let status = {
+      code: "",
+      message: "",
+    };
     const postId = randomUUID();
 
     const { id, title, content } = post;
@@ -28,15 +34,46 @@ export class PostsDatabase {
   }
 
   async update(id, post) {
+    if (!id) return;
+
+    let status = {
+      code,
+      message,
+    };
+
     const { title, content } = post;
 
-    await sql`update posts set title = ${title}, content = ${content} where id = ${id}`;
+    if (title || content === "") {
+      status.code = 400;
+      status.message = "Não é possivel alterar campos vazios, tente novamente!";
+
+      return status;
+    }
+
+    const response =
+      await sql`update posts set title = ${title}, content = ${content} where id = ${id}`;
+
+    if (response.length > 0) {
+      status.message = "Algo deu errado, tente novamente!";
+      status.code = 400;
+      return { status, response };
+    }
+
+    status.message = "Post atualizado com sucesso!";
+    status.code = 200;
+
+    return status;
   }
 
   async delete(id) {
     await sql`delete from posts where id = ${id}`;
   }
 
+  async getPost(postId) {
+    if (!postId) return;
+
+    const response = await sql`SELECT * FROM posts WHERE id = ${postId} `;
+  }
   async list(search) {
     let posts;
 

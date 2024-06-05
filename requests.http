@@ -25,7 +25,7 @@ Content-Type: application/json
 
 ###
 
-GET  http://localhost:3333/user/profile/f57cbc59-7b68-4cac-879c-1514ccbdbbc8
+GET  http://localhost:3333/user/profile/f57cbc59-7b68-4cac-879c-1514ccbd
 
 
 

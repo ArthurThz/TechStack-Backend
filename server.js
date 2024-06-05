@@ -33,6 +33,14 @@ server.get("/posts/general", async (request) => {
   return getPosts;
 });
 
+server.get("/posts/:id", async (request) => {
+  const postId = request.params.id;
+
+  const getPosts = await posts.update(postId);
+
+  return getPosts;
+});
+
 server.get("/posts/user/:id", async (request, response) => {
   const userId = request.params.id;
 
