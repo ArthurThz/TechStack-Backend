@@ -36,7 +36,7 @@ server.get("/posts/general", async (request) => {
 server.get("/posts/:id", async (request) => {
   const postId = request.params.id;
 
-  const getPosts = await posts.update(postId);
+  const getPosts = await posts.getPost(postId);
 
   return getPosts;
 });

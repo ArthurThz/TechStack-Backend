@@ -25,7 +25,7 @@ Content-Type: application/json
 
 ###
 
-GET  http://localhost:3333/user/profile/f57cbc59-7b68-4cac-879c-1514ccbd
+GET  http://localhost:3333/posts/fbe88591-6de4-4467-bd89-009e3bc38c80
 
 
 
@@ -55,8 +55,8 @@ PUT  http://localhost:3333/user/f57cbc59-7b68-4cac-879c-1514ccbdbbc8
 Content-Type: application/json
  
 {
-   "nome":"",
-   "email":"",
+   "nome":"Turzin do grau",
+   "email":"arthur@mail.com",
    "profissao":"Front-end Developer",
    "senha":"$2b$10$tJFjupAOk5Wp44KM9QvbyuVErYMkxlc5auPl5fmQh35t.JlU73tS.",
    "github":"arthurthz"

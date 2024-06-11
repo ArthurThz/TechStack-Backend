@@ -20,17 +20,15 @@ export class PostsDatabase {
     });
 
     const userData =
-      await sql`SELECT nome, sobrenome, profissao, profilepic FROM users WHERE id = ${id}`;
+      await sql`SELECT nome, profissao, profilepic FROM users WHERE id = ${id}`;
 
-    const { nome, sobrenome, profissao, profilepic } = userData[0];
-
-    const creatorName = `${nome} ${sobrenome}`;
+    const { nome, profissao, profilepic } = userData[0];
 
     await sql`
     INSERT INTO posts
-    (id, creatorId, creatorName, title, content, role, date, profilepic)
+    (id, creatorid, creatorname, title, content, role, date, profilepic)
     VALUES
-    (${postId},${id},${creatorName},${title},${content},${profissao},${publishedDate},${profilepic})`;
+    (${postId},${id},${nome},${title},${content},${profissao},${publishedDate},${profilepic})`;
   }
 
   async update(id, post) {
@@ -73,6 +71,8 @@ export class PostsDatabase {
     if (!postId) return;
 
     const response = await sql`SELECT * FROM posts WHERE id = ${postId} `;
+
+    return response;
   }
   async list(search) {
     let posts;

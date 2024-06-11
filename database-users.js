@@ -69,17 +69,20 @@ export class DatabaseUsers {
 
     const { nome, email, profissao, senha, github } = user;
 
-    const response = await sql`
+    const updateUserResponse = await sql`
     update users set nome = ${nome},
     email = ${email},
     profissao = ${profissao},
     senha = ${senha},
     github = ${github} WHERE id = ${id} `;
 
-    if (response.length > 0) {
+    const updatePostsResponse =
+      await sql`UPDATE posts SET creatorname = ${nome} WHERE creatorid = ${id}`;
+
+    if (updateUserResponse.length || updatePostsResponse > 0) {
       status.message = "Algo deu errado, tente novamente!";
       status.code = 400;
-      return { status, response };
+      return { status, updateUserResponse };
     }
 
     status.message = "Usuário atualizado com sucesso!";
