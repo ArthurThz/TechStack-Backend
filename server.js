@@ -20,9 +20,12 @@ server.register(cors, {
 
 server.post("/post", async (request, response) => {
   const newPost = request.body;
-  await posts.create(newPost);
 
-  return response.status(201).send();
+  const createPostResponse = await posts.create(newPost);
+
+  const { code, message } = createPostResponse;
+
+  return response.status(code).send(message);
 });
 
 server.get("/posts/general", async (request) => {
@@ -33,12 +36,14 @@ server.get("/posts/general", async (request) => {
   return getPosts;
 });
 
-server.get("/posts/:id", async (request) => {
+server.get("/posts/:id", async (request, response) => {
   const postId = request.params.id;
 
   const getPosts = await posts.getPost(postId);
 
-  return getPosts;
+  const { status, content } = getPosts;
+
+  return response.status(status).send(content);
 });
 
 server.get("/posts/user/:id", async (request, response) => {
@@ -54,9 +59,11 @@ server.put("/post/:id", async (request, response) => {
 
   const post = request.body;
 
-  await posts.update(postId, post);
+  const updatePostResponse = await posts.update(postId, post);
 
-  return response.status(204).send();
+  const { code, message } = updatePostResponse;
+
+  return response.status(code).send(message);
 });
 
 server.delete("/post/:id", async (request, response) => {

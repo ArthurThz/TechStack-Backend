@@ -25,7 +25,7 @@ Content-Type: application/json
 
 ###
 
-GET  http://localhost:3333/posts/fbe88591-6de4-4467-bd89-009e3bc38c80
+GET  http://localhost:3333/posts/e35a03e8-2e42-4777-b303-e9e9b0df92f6
 
 
 
@@ -46,24 +46,21 @@ Content-Type: application/json
 
 ###
 
-GET https://api.github.com/users/brunolmki
+GET http://localhost:3333/posts/general
 
 
 ###
 
-PUT  http://localhost:3333/user/f57cbc59-7b68-4cac-879c-1514ccbdbbc8
+PUT  http://localhost:3333/post/31841c22-ec58-4a2f-8d3d-e601e61e9457
 Content-Type: application/json
  
 {
-   "nome":"Turzin do grau",
-   "email":"arthur@mail.com",
-   "profissao":"Front-end Developer",
-   "senha":"$2b$10$tJFjupAOk5Wp44KM9QvbyuVErYMkxlc5auPl5fmQh35t.JlU73tS.",
-   "github":"arthurthz"
+   "title":"",
+   "content":"LOREM"
 }
  
 ###
 
-DELETE  http://localhost:3333/post/b954c5b3-77eb-487c-a5af-094461448782
+DELETE  http://localhost:3333/post/f0c54d60-1ee4-403a-a36b-2451e366
 
 
