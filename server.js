@@ -16,6 +16,26 @@ server.register(cors, {
   origin: "*",
 });
 
+const preHandler = {
+  preHandler: (request, response, done) => {
+    const token = request.headers.authorization?.replace(/^Bearer /, "");
+
+    if (!token) {
+      response
+        .code(401)
+        .send({ message: "Unauthorized: user is not authenticated" });
+    }
+
+    const user = auth.verifyToken(token);
+
+    if (!user) {
+      response.code(401).send({ message: "Unauthorized: User not founded!" });
+    }
+
+    request.user = user;
+    done();
+  },
+};
 // POST ROUTES
 
 server.post("/post", async (request, response) => {
@@ -28,7 +48,7 @@ server.post("/post", async (request, response) => {
   return response.status(code).send(message);
 });
 
-server.get("/posts/general", async (request) => {
+server.get("/posts/general", preHandler, async (request) => {
   const search = request.query.search;
 
   const getPosts = await posts.list(search);
@@ -86,7 +106,7 @@ server.post("/users/register", async (request, reply) => {
   return reply.status(code).send(message);
 });
 
-server.get("/user/profile/:id", async (request, response) => {
+server.get("/user/profile/:id", preHandler, async (request, response) => {
   const userId = request.params.id;
 
   const userData = await users.getUserProfileData(userId);
@@ -95,7 +115,7 @@ server.get("/user/profile/:id", async (request, response) => {
 });
 
 // Update User Data
-server.put("/user/:id", async (request, response) => {
+server.put("/user/:id", preHandler, async (request, response) => {
   const userId = request.params.id;
 
   const userData = request.body;

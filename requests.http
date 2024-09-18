@@ -46,7 +46,8 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3333/posts/general
+GET http://localhost:3333/user/profile/f57cbc59-7b68-4cac-879c-1514ccbdbbc8
+   Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFydGh1ckBtYWlsLmNvbSIsImlhdCI6MTcyNjU5MDQwNSwiZXhwIjoxNzI2Njc2ODA1fQ.uGSI4IfkHv3TCKemJCIF3mQ4s865aGKSaCxr65aR1OU"
 
 
 ###

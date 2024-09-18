@@ -138,7 +138,7 @@ export class DatabaseUsers {
 
   async getUserProfileData(id) {
     if (!id) return;
-
+    console.log(id);
     let status = {
       message: "",
       code: "",
