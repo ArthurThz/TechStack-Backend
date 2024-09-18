@@ -16,21 +16,54 @@ server.register(cors, {
   origin: "*",
 });
 
-// Posts Routes
+const preHandler = {
+  preHandler: (request, response, done) => {
+    const token = request.headers.authorization?.replace(/^Bearer /, "");
+
+    if (!token) {
+      response
+        .code(401)
+        .send({ message: "Unauthorized: user is not authenticated" });
+    }
+
+    const user = auth.verifyToken(token);
+
+    if (!user) {
+      response.code(401).send({ message: "Unauthorized: User not founded!" });
+    }
+
+    request.user = user;
+    done();
+  },
+};
+// POST ROUTES
 
 server.post("/post", async (request, response) => {
   const newPost = request.body;
-  await posts.create(newPost);
 
-  return response.status(201).send();
+  const createPostResponse = await posts.create(newPost);
+
+  const { code, message } = createPostResponse;
+
+  return response.status(code).send(message);
 });
 
-server.get("/posts/general", async (request) => {
+server.get("/posts/general", preHandler, async (request) => {
   const search = request.query.search;
 
   const getPosts = await posts.list(search);
 
   return getPosts;
+});
+
+server.get("/posts/:id", async (request, response) => {
+  const postId = request.params.id;
+
+  const getPosts = await posts.getPost(postId);
+
+  const { status, content } = getPosts;
+
+  return response.status(status).send(content);
 });
 
 server.get("/posts/user/:id", async (request, response) => {
@@ -46,9 +79,11 @@ server.put("/post/:id", async (request, response) => {
 
   const post = request.body;
 
-  await posts.update(postId, post);
+  const updatePostResponse = await posts.update(postId, post);
 
-  return response.status(204).send();
+  const { code, message } = updatePostResponse;
+
+  return response.status(code).send(message);
 });
 
 server.delete("/post/:id", async (request, response) => {
@@ -59,54 +94,37 @@ server.delete("/post/:id", async (request, response) => {
   return response.status(204).send();
 });
 
-// Users Routes
+// USERS ROUTES
 
-server.post("/users/register", async (request, response) => {
-  const { cpf } = request.body;
-
-  const verifyUser = await users.verifyIfUserExists(cpf);
-
-  if (verifyUser.length > 0) {
-    return response.status(401).send({
-      errorMessage: "Usuário já está cadastro em nosso sistema",
-    });
-  }
-
+server.post("/users/register", async (request, reply) => {
   const newUser = request.body;
 
-  await users.create(newUser);
+  const dbResponse = await users.create(newUser);
 
-  return response.status(201).send();
-});
-server.post("/users/login", async (request, response) => {
-  const { email, password } = request.body;
+  const { code, message } = dbResponse;
 
-  const res = await auth.login(email, password);
-
-  return response.status(201).send(res);
+  return reply.status(code).send(message);
 });
 
-server.get("/user/profile/:id", async (request, response) => {
+server.get("/user/profile/:id", preHandler, async (request, response) => {
   const userId = request.params.id;
 
   const userData = await users.getUserProfileData(userId);
+
   return userData;
 });
-server.put("/user/:id", async (request, response) => {
+
+// Update User Data
+server.put("/user/:id", preHandler, async (request, response) => {
   const userId = request.params.id;
 
-  const { nome, sobrenome, email, telefone, profissao, senha } = request.body;
+  const userData = request.body;
 
-  await users.update(userId, {
-    nome,
-    sobrenome,
-    email,
-    telefone,
-    profissao,
-    senha,
-  });
+  const databaseCallResponse = await users.update(userId, userData);
 
-  return response.status(204).send();
+  const { code, message } = databaseCallResponse;
+
+  return response.status(code).send(message);
 });
 
 server.get("/user/:id", async (request, response) => {
@@ -117,8 +135,24 @@ server.get("/user/:id", async (request, response) => {
   return userData;
 });
 
-// Criar rota de auth do usuario com jwt e busca de credenciais de usuário para login
+// User Auth
+server.post("/users/login", async (request, response) => {
+  const { email, password } = request.body;
 
+  const res = await auth.login(email, password);
+
+  return response.status(201).send(res);
+});
+
+// TESTING
+
+server.get("/teste/:id", async (request, reply) => {
+  const id = request.params.id;
+
+  const teste = await users.listUserData(id);
+
+  console.log(teste);
+});
 server.listen({
   port: 3333,
 });

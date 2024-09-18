@@ -2,13 +2,13 @@ POST http://localhost:3333/users/register
 Content-Type: application/json
 
 {
-   "cpf":"12345678910",
-   "nome":"Arthur",
-   "sobrenome":"Theodoro",
-   "email":"arthur@mail.com",
-   "telefone":"(11)988888888",
-   "profissao":"Front end Dev",
-   "senha":"123123123"
+"email": "arthur@mail.com",
+"github":"arthurthz",
+"nome":"Silva da Silva",
+"profilepic":"https://avatars.githubusercontent.com/u/89098685?v=4",
+"profissao":"dev",
+"repetirSenha":"123123123",
+"senha":"123123123"
 }
 
 
@@ -22,6 +22,14 @@ Content-Type: application/json
    "email":"arthur@mail.com",
    "password":"123123123"
 }
+
+###
+
+GET  http://localhost:3333/posts/e35a03e8-2e42-4777-b303-e9e9b0df92f6
+
+
+
+
 
 
 ###
@@ -38,23 +46,22 @@ Content-Type: application/json
 
 ###
 
-GET https://api.github.com/users/arthurthz
+GET http://localhost:3333/user/profile/f57cbc59-7b68-4cac-879c-1514ccbdbbc8
+   Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFydGh1ckBtYWlsLmNvbSIsImlhdCI6MTcyNjU5MDQwNSwiZXhwIjoxNzI2Njc2ODA1fQ.uGSI4IfkHv3TCKemJCIF3mQ4s865aGKSaCxr65aR1OU"
 
 
 ###
 
-PUT  http://localhost:3333/post/c2a07ff6-5736-4230-a728-3c461e5b7f1b
+PUT  http://localhost:3333/post/31841c22-ec58-4a2f-8d3d-e601e61e9457
 Content-Type: application/json
  
 {
-   "title":"TESTANDO 3.0",
-   "content":"TURZIN DO GRAU"
-    
+   "title":"",
+   "content":"LOREM"
 }
-
-
+ 
 ###
 
-DELETE  http://localhost:3333/post/b954c5b3-77eb-487c-a5af-094461448782
+DELETE  http://localhost:3333/post/f0c54d60-1ee4-403a-a36b-2451e366
 
 
